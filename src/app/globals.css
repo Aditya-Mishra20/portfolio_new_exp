@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+/* Dark mode driven by next-themes' data-theme attribute (dossier §2: Tiwari uses attribute data-theme) */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+:root {
+  /* zinc light palette — exact values recovered from the reference site (dossier §11) */
+  --background: #ffffff;
+  --foreground: #09090b;
+  --card: #ffffff;
+  --card-foreground: #09090b;
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
+  --primary: #18181b;
+  --primary-foreground: #fafafa;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717b;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+  --destructive: #e40014;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #a1a1aa;
+  --radius: 0.625rem;
+}
+
+[data-theme="dark"] {
+  /* dark = lab(2.51107 ...)/body bg + white/10 hairline borders, sampled live */
+  --background: #09090b;
+  --foreground: #fafafa;
+  --card: #0e0e10;
+  --card-foreground: #fafafa;
+  --popover: #101012;
+  --popover-foreground: #fafafa;
+  --primary: #fafafa;
+  --primary-foreground: #18181b;
+  --secondary: #18181b;
+  --secondary-foreground: #fafafa;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --accent: #1f1f22;
+  --accent-foreground: #fafafa;
+  --destructive: #ef4444;
+  --border: rgb(255 255 255 / 0.1);
+  --input: rgb(255 255 255 / 0.1);
+  --ring: #52525b;
+}
+
+/* Motion token system (dossier §8 — Gogula reference) */
+:root {
+  --motion-duration-instant: 60ms;
+  --motion-duration-fast: 0.18s;
+  --motion-duration-base: 0.26s;
+  --motion-duration-slow: 0.36s;
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 10px);
+  --font-sans: var(--font-dm);
+  --font-heading: var(--font-outfit);
+  --font-mono: var(--font-grotesk);
+  --shadow-ax: 0px 2px 3px -1px #0000001a, 0px 1px 0px 0px #191c2105, 0px 0px 0px 1px #191c2114;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-dm), system-ui, sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* heading type treatment (Outfit, deliberately small like the reference) */
+.font-heading {
+  font-family: var(--font-outfit), system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* section titles: text-xl font-medium tracking-tight (reference scale) */
+h2.section-title {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  font-size: 1.25rem;
+  padding-block: 0.25rem;
+}
+
+::selection {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+/* keyboard-focus ring consistent with the palette look */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* thin scrollbar, palette-style */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* themed hero art swap: exactly one variant renders at a time */
+.hero-art-light,
+.hero-art-dark {
+  display: none;
+}
+[data-theme="dark"] .hero-art-dark {
+  display: block;
+}
+:where(html:not([data-theme="dark"])) .hero-art-light,
+html:not([data-theme]) .hero-art-light {
+  display: block;
+}
+
+/* ghost dot-grid backdrop for hero sections (inline, no asset) */
+.dot-grid {
+  background-image: radial-gradient(color-mix(in oklab, var(--foreground) 14%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* cmdk panel styling (dossier §1) */
+[data-cmdk-overlay] {
+  position: fixed;
+  inset: 0;
+  background: color-mix(in oklab, var(--foreground) 40%, transparent);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+}
+[data-cmdk-content] {
+  position: fixed;
+  left: 50%;
+  top: 20vh;
+  transform: translateX(-50%);
+  width: min(560px, calc(100vw - 2rem));
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 6px);
+  box-shadow:
+    0px 24px 48px -12px color-mix(in oklab, #000 24%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--foreground) 6%, transparent);
+  overflow: hidden;
+  z-index: 51;
+}
