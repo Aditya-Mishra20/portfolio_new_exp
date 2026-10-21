@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer";
 import { DockPill } from "@/components/dock-pill";
 import { CommandPalette } from "@/components/command-palette";
 import { ChatWidget } from "@/components/chat-widget";
-import { profile } from "@/content/site";
+import { profile, SITE_URL } from "@/content/site";
 import "./globals.css";
 
 // Fonts per Ashutosh's stack (dossier §11 + live computed styles): DM Sans body,
@@ -14,11 +14,12 @@ const dm = DM_Sans({ subsets: ["latin"], variable: "--font-dm" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 const grotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-grotesk" });
 
-// TODO: title/description/URL metadata
+// Metadata copy lives in site.ts (profile) — only the URL was pending; it now
+// derives from SITE_URL (TODO: set the production domain there)
 export const metadata: Metadata = {
   title: `${profile.name} — ${profile.role}`,
   description: profile.bio,
-  metadataBase: new URL("https://your-domain.example.com"),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     title: `${profile.name} — ${profile.role}`,
     description: profile.bio,

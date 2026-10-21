@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
-import { projects, type Project } from "@/content/site";
+import { projects, socials, ui, type Project } from "@/content/site";
 import { Section } from "@/components/section";
 import { Reveal } from "@/components/reveal";
 import { LinkPreview } from "@/components/ui/link-preview";
@@ -10,19 +10,16 @@ import { LinkPreview } from "@/components/ui/link-preview";
 /* Gogula-style project index. The hover/click link lives on the TITLE  */
 /* only. Hovering a title shows the Aceternity LinkPreview card above   */
 /* it — cursor-tracked, with the project's preview art and a clickable  */
-/* source/live caption strip. Placeholder art today (isStatic); flip    */
-/* LinkPreview's isStatic off once real URLs exist for live shots.      */
+/* source/live caption strip. Placeholder art comes from p.imageSrc     */
+/* (site.ts) or the shared fallback below (isStatic); flip LinkPreview  */
+/* 's isStatic off once real URLs exist for live shots.                 */
 /* ------------------------------------------------------------------ */
 
-/** Inline placeholder preview art as a data URI — TODO: drop real PNGs into public/projects/ and set imageSrc to them. */
-function placeholderArt(index: number): string {
-  const svgs = [
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#18181b"/><rect x="24" y="30" width="120" height="120" rx="10" fill="none" stroke="#71717a" stroke-width="1.5"/><circle cx="232" cy="64" r="38" fill="none" stroke="#71717a" stroke-width="1.5"/><path d="M180 168 L212 126 L254 168 Z" fill="none" stroke="#71717a" stroke-width="1.5"/><line x1="30" y1="180" x2="290" y2="180" stroke="#52525b"/></svg>`,
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#18181b"/><rect x="28" y="32" width="264" height="42" rx="8" fill="none" stroke="#71717a" stroke-width="1.5"/><rect x="28" y="92" width="122" height="76" rx="8" fill="none" stroke="#71717a" stroke-width="1.5"/><rect x="170" y="92" width="122" height="76" rx="8" fill="none" stroke="#71717a" stroke-width="1.5"/><circle cx="48" cy="53" r="8" fill="#71717a"/><circle cx="72" cy="53" r="8" fill="none" stroke="#71717a" stroke-width="1.5"/></svg>`,
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#18181b"/><path d="M32 168 L112 64 L192 168 Z" fill="none" stroke="#71717a" stroke-width="1.5"/><rect x="222" y="44" width="70" height="70" rx="10" fill="none" stroke="#71717a" stroke-width="1.5"/><rect x="228" y="132" width="82" height="46" rx="8" fill="none" stroke="#71717a" stroke-width="1.5"/><circle cx="168" cy="44" r="6" fill="#71717a"/></svg>`,
-  ];
-  return `data:image/svg+xml,${encodeURIComponent(svgs[index % svgs.length])}`;
-}
+/** Neutral shared placeholder as a data URI — used when a project has no imageSrc */
+/* TODO: real screenshots → public/projects/, set imageSrc per project in site.ts */
+const PLACEHOLDER_ART = `data:image/svg+xml,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200"><rect width="320" height="200" fill="#18181b"/><rect x="24" y="30" width="120" height="120" rx="10" fill="none" stroke="#71717a" stroke-width="1.5"/><circle cx="232" cy="64" r="38" fill="none" stroke="#71717a" stroke-width="1.5"/><path d="M180 168 L212 126 L254 168 Z" fill="none" stroke="#71717a" stroke-width="1.5"/><line x1="30" y1="180" x2="290" y2="180" stroke="#52525b"/></svg>`
+)}`;
 
 function hostOf(url?: string): string | null {
   if (!url) return null;
@@ -41,7 +38,7 @@ function Row({ p, i }: { p: Project; i: number }) {
             <LinkPreview
               url={open ?? "#"}
               isStatic
-              imageSrc={placeholderArt(i)} // TODO: real screenshot → public/projects/<name>.png
+              imageSrc={p.imageSrc ?? PLACEHOLDER_ART}
               caption={host ?? undefined}
               githubUrl={p.github}
               width={280}
@@ -65,11 +62,12 @@ export function ProjectList() {
   return (
     <Section
       id="projects"
-      title="Projects"
-      intro="Things I'm making and have shipped. Hover a title to peek at it."
+      title={ui.sections.projects.title}
+      intro={ui.sections.projects.intro}
       actions={
         <a
-          href="https://github.com/your-handle?tab=repositories" // TODO: your repos
+          // derived from the single socials.github source in site.ts
+          href={`${socials.github}?tab=repositories`}
           target="_blank"
           rel="noreferrer"
           className="text-xs font-light text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"

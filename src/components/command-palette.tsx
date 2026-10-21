@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { useEffect } from "react";
 import { useCommandPalette, scrollToId } from "@/components/providers";
-import { email, socials, calcomUrl, resumeUrl, navSections } from "@/content/site";
+import { email, socials, calcomUrl, resumeUrl, navSections, ui } from "@/content/site";
 
 /**
  * Ctrl+K command palette — cmdk + Radix Dialog with global hotkey,
@@ -146,7 +146,7 @@ export function CommandPalette() {
                   icon={<MessageCircle />}
                   onSelect={() => {
                     setOpen(false);
-                    window.dispatchEvent(new CustomEvent("open-chat"));
+                    window.dispatchEvent(new CustomEvent(ui.event.openChat));
                   }}
                 />
               </Command.Group>

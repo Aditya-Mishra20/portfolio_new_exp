@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight, Calendar, Download, Github, Linkedin, Mail, Twitter } from "lucide-react";
-import { profile, email, calcomUrl, socials, resumeUrl } from "@/content/site";
+import { profile, email, calcomUrl, socials, resumeUrl, ui } from "@/content/site";
 import { Separator } from "@/components/ui/separator";
 
 /** Abstract placeholder hero art — TODO: replace with your own art. */
@@ -119,12 +119,12 @@ export function Hero() {
 
         {/* CTAs */}
         <div className="mt-5 flex flex-wrap gap-2.5 items-center">
-          <SolidCta href={calcomUrl} icon={Calendar}>Book a intro Call</SolidCta>
-          <SolidCta icon={Mail}>Send a Email</SolidCta>
+          <SolidCta href={calcomUrl} icon={Calendar}>{ui.cta.bookCall}</SolidCta>
+          <SolidCta icon={Mail}>{ui.cta.sendEmail}</SolidCta>
         </div>
 
         {/* Socials lead-in, then Resume + socials row */}
-        <p className="mt-5 text-sm text-foreground/60 font-light">Check out my Socials.</p>
+        <p className="mt-5 text-sm text-foreground/60 font-light">{ui.socialsLeadIn}</p>
         <div className="mt-2.5 flex flex-wrap gap-2 items-center">
           <a href={resumeUrl} className={chipCls}>
             <Download className="size-3.5" /> Resume

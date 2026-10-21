@@ -1,7 +1,7 @@
 "use client";
 
 import { Github, Linkedin, Mail, Calendar, ArrowUpRight, Twitter } from "lucide-react";
-import { email, calcomUrl, socials, profile } from "@/content/site";
+import { email, calcomUrl, socials, profile, ui } from "@/content/site";
 import { Section } from "@/components/section";
 import { Reveal } from "@/components/reveal";
 import { SolidCta } from "@/components/hero";
@@ -9,14 +9,14 @@ import { SolidCta } from "@/components/hero";
 /** Contact — same quiet pattern: small heading, solid CTAs, icon chips. */
 export function Contact() {
   return (
-    <Section title="Contact" intro={`${profile.availability} The fastest way to reach me is a short call or email.`}>
+    <Section title={ui.sections.contact.title} intro={`${profile.availability} ${ui.sections.contact.introLead}`}>
       <Reveal>
         <div className="flex flex-wrap gap-2.5 items-center">
           <SolidCta href={calcomUrl} icon={Calendar}>
-            Book a intro Call
+            {ui.cta.bookCall}
           </SolidCta>
           <SolidCta href={`mailto:${email}`} icon={Mail}>
-            Send a Email
+            {ui.cta.sendEmail}
           </SolidCta>
         </div>
         <div className="mt-4 flex gap-2">

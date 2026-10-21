@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { profile } from "@/content/site";
+import { profile, ui } from "@/content/site";
 import { usePageViews } from "@/components/providers";
 import { Separator } from "@/components/ui/separator";
 
@@ -70,11 +70,7 @@ function FooterArt() {
 export function Footer() {
   const views = usePageViews("/");
   const now = useClock();
-  const agentLinks = [
-    { label: "robots.txt", href: "/robots.txt" },
-    { label: "sitemap.xml", href: "/sitemap.xml" },
-    { label: "llm.txt", href: "/llm.txt" },
-  ];
+  const agentLinks = ui.footer.agentLinks;
 
   return (
     <footer>
@@ -103,7 +99,7 @@ export function Footer() {
                   <span>
                     © {new Date().getFullYear()}{" "}
                     <a href="#" className="underline underline-offset-2 decoration-white/40">{profile.name}</a>
-                    . The source · All rights reserved
+                    . {ui.footer.copyrightNote}
                   </span>
                   {agentLinks.map((l) => (
                     <a key={l.label} href={l.href} className="underline underline-offset-2 decoration-white/40 hover:text-white">

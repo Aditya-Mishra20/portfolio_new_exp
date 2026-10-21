@@ -27,6 +27,10 @@ export const email = "you@example.com"; // TODO
 export const calcomUrl = "https://cal.com/your-handle/30min"; // TODO
 export const resumeUrl = "/resume.pdf"; // TODO: drop your PDF into public/
 
+/** Single base URL — the one deployment target for metadata, sitemap, robots.
+ * TODO: swap for your production domain (e.g. "https://you.dev"). */
+export const SITE_URL = "http://localhost:3000";
+
 export const socials = {
   // TODO: your handles
   github: "https://github.com/your-handle",
@@ -41,6 +45,9 @@ export type Project = {
   tech: string[];
   github?: string;
   live?: string;
+  /** Hover-preview art: "/projects/<name>.png" from public/ — TODO: real screenshots.
+   * Falls back to placeholder art when unset (never position-dependent). */
+  imageSrc?: string;
 };
 
 export const projects: Project[] = [
@@ -165,15 +172,61 @@ export const experience: ExperienceItem[] = [
   },
 ];
 
+/**
+ * UI copy — every interface string in one place: section headers/intros,
+ * button labels, chat strings, footer strips, and shared event names.
+ * Data lives above this block; this is what the site *says*.
+ */
+export const ui = {
+  /** Hero: lead-in printed between the CTAs and the social chips. */
+  socialsLeadIn: "Check out my Socials.", // TODO
+  cta: {
+    bookCall: "Book a intro Call", // TODO (labels shared by hero + contact)
+    sendEmail: "Send a Email", // TODO
+  },
+  sections: {
+    projects: {
+      title: "Projects",
+      intro: "Things I'm making and have shipped. Hover a title to peek at it.",
+    },
+    techStack: { title: "Tech Stack" },
+    experiences: {
+      title: "Experiences",
+      intro: "Where I've worked and what I did there. Click a role to expand it.",
+    },
+    contact: {
+      title: "Contact",
+      // rendered as `${profile.availability} ${introLead}`
+      introLead: "The fastest way to reach me is a short call or email.",
+    },
+  },
+  chat: {
+    greeting: `Hi! I'm ${profile.name}'s README bot. Ask me anything about this portfolio — projects, stack, experience, contact.`,
+    askLabel: "Ask me anything",
+    /** /md routes the chat widget fetches to build its retrieval index — keep in sync
+     * with content/markdown.ts, which owns the actual doc contents (server-only). */
+    docRoutes: ["/md/profile.md", "/md/projects.md", "/md/experience.md", "/md/contact.md"],
+  },
+  /** Custom DOM events shared between dock pill, palette, and chat widget. */
+  event: { openChat: "open-chat" },
+  footer: {
+    copyrightNote: "The source · All rights reserved", // TODO
+    agentLinks: [
+      // served by app robots.ts/sitemap.ts + the /llm.txt alias
+      { label: "robots.txt", href: "/robots.txt" },
+      { label: "sitemap.xml", href: "/sitemap.xml" },
+      { label: "llm.txt", href: "/llm.txt" },
+    ],
+  },
+} as const;
+
+/**
+ * Section anchors for the nav UIs — the dock's mobile menu and the Ctrl K
+ * palette both read this one array (top navbar was removed).
+ */
 export const navSections = [
   { id: "projects", label: "Projects" },
   { id: "tech-stack", label: "Tech Stack" },
-  { id: "experience", label: "Experience" },
-  { id: "contact", label: "Contact" },
-];
-
-/** Links shown in the top navbar + mobile menu — user cut this to just two. */
-export const navLinks = [
-  { id: "projects", label: "Projects" },
+  { id: "experience", label: "Experiences" },
   { id: "contact", label: "Contact" },
 ];

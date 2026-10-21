@@ -3,7 +3,7 @@
 import { Send, X, Bot, User } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { profile } from "@/content/site";
+import { ui } from "@/content/site";
 
 /* ------------------------------------------------------------------ */
 /* AI Q&A chat. Placeholder logic: it downloads the site's own /md     */
@@ -12,7 +12,7 @@ import { profile } from "@/content/site";
 /* the retrieval index can then be reused as RAG context.              */
 /* ------------------------------------------------------------------ */
 
-const DOCS = ["/md/profile.md", "/md/projects.md", "/md/experience.md", "/md/contact.md"];
+const DOCS = [...ui.chat.docRoutes];
 
 type Passage = { doc: string; text: string };
 
@@ -85,7 +85,7 @@ export function ChatWidget() {
   const [msgs, setMsgs] = useState<Msg[]>([
     {
       role: "bot",
-      text: `Hi! I'm ${profile.name}'s README bot. Ask me anything about this portfolio — projects, stack, experience, contact.`,
+      text: ui.chat.greeting,
     },
   ]);
   const indexRef = useRef<Passage[] | null>(null);
@@ -93,12 +93,13 @@ export function ChatWidget() {
 
   /* ------------------------------------------------------------------ */
   /* The launcher lives in the dock pill (dock-pill.tsx dispatches       */
-  /* "open-chat"); there is no standalone bottom-right button anymore.   */
+  /* ui.event.openChat); no standalone bottom-right button anymore.      */
   /* ------------------------------------------------------------------ */
   useEffect(() => {
+    const eventName = ui.event.openChat;
     const fn = () => setOpen((o) => !o);
-    window.addEventListener("open-chat", fn);
-    return () => window.removeEventListener("open-chat", fn);
+    window.addEventListener(eventName, fn);
+    return () => window.removeEventListener(eventName, fn);
   }, []);
 
   // preload the markdown index once per mount
@@ -161,7 +162,7 @@ export function ChatWidget() {
           >
             <div className="flex items-center gap-2 border-b border-border px-4 py-3">
               <Bot className="size-4 text-muted-foreground" />
-              <span className="font-display text-sm font-semibold">Ask me anything</span>
+              <span className="font-display text-sm font-semibold">{ui.chat.askLabel}</span>
               <span className="ml-auto font-mono text-[10px] text-muted-foreground">/md-powered</span>
               <button
                 onClick={() => setOpen(false)}

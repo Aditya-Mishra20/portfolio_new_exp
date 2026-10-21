@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useCommandPalette, scrollToId } from "@/components/providers";
-import { navLinks, resumeUrl } from "@/content/site";
+import { navSections, resumeUrl, ui } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 /* ------------------------------------------------------------------ */
@@ -108,7 +108,7 @@ function MobileMenu() {
             transition={{ duration: 0.18, ease: [0.2, 0, 0, 1] }}
             className="absolute bottom-11 right-0 w-44 rounded-lg border border-border bg-popover text-popover-foreground p-1.5 shadow-xl"
           >
-            {navLinks.map((s) => (
+            {navSections.map((s) => (
               <button
                 key={s.id}
                 onClick={() => {
@@ -148,14 +148,14 @@ export function DockPill() {
         {/* ask trigger — opens the existing cmdk palette */}
         <button
           type="button"
-          aria-label="Ask me anything"
+          aria-label={ui.chat.askLabel}
           aria-haspopup="dialog"
           onClick={() => setOpen(true)}
           className="flex h-8 items-center gap-2 rounded-full px-3 bg-foreground/5 hover:bg-foreground/8 dark:bg-foreground/8 dark:hover:bg-foreground/12 text-muted-foreground transition-colors cursor-pointer w-[160px] sm:w-[210px] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
         >
           <Search className="size-[14px] shrink-0 text-muted-foreground" />
           <span aria-hidden="true" className="flex-1 text-left text-[12.5px] truncate">
-            Ask me anything
+            {ui.chat.askLabel}
           </span>
           <span aria-hidden="true" className="hidden sm:flex items-center gap-1 shrink-0">
             <kbd className="flex h-[18px] min-w-[18px] items-center justify-center rounded-[6px] bg-foreground/10 px-1 text-[11px] font-medium leading-none text-muted-foreground">
@@ -172,9 +172,9 @@ export function DockPill() {
 
         <ThemeButton />
 
-        {/* AI chat bot — opens the chat widget via the same event it listens for */}
+        {/* AI chat bot — opens the chat widget via the shared event it listens for */}
         <button
-          onClick={() => window.dispatchEvent(new CustomEvent("open-chat"))}
+          onClick={() => window.dispatchEvent(new CustomEvent(ui.event.openChat))}
           aria-label="Chat with my AI"
           className="relative flex h-8 w-8 items-center justify-center rounded-full text-foreground/80 hover:bg-foreground/5 dark:hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring transition-colors cursor-pointer"
         >

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { experience, type ExperienceItem } from "@/content/site";
+import { experience, ui, type ExperienceItem } from "@/content/site";
 import { BrandIcon } from "@/components/brand-icons";
 import { Section } from "@/components/section";
 import { Reveal } from "@/components/reveal";
@@ -97,7 +97,7 @@ function Row({ job, i }: { job: ExperienceItem; i: number }) {
 
 export function Experience() {
   return (
-    <Section title="Experiences" intro="Where I've worked and what I did there. Click a role to expand it.">
+    <Section title={ui.sections.experiences.title} intro={ui.sections.experiences.intro}>
       <div className="divide-y divide-border">
         {experience.map((job, i) => (
           <Row key={job.company + job.period} job={job} i={i} />

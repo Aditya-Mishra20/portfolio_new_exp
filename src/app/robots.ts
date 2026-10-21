@@ -1,11 +1,9 @@
 import type { MetadataRoute } from "next";
-
-// TODO: set your production URL here
-const BASE = "https://your-domain.example.com";
+import { SITE_URL } from "@/content/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: "*", allow: "/" },
-    sitemap: `${BASE}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }
