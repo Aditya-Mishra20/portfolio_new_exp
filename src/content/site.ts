@@ -9,11 +9,13 @@ export type ProjectStatus = "ongoing" | "building" | "completed";
 export const profile = {
   // TODO: your name
   name: "Your Name",
-  // TODO: your title line
-  role: "Full-Stack Developer",
+  // TODO: your title line (kept for metadata; hero cycles `roles` below)
+  role: "AI Engineer",
+  // TODO: hero title cycles through these (FlipWords)
+  roles: ["AI Engineer", "Full Stack AI Engineer", "Software Developer", "AI Automation"],
   // TODO: one-paragraph intro
   bio: "I build clean, modern web products where design, functionality, and the smallest details matter. Focused on shipping things that are fast, accessible, and satisfying to use.",
-  // TODO: your location
+  // TODO: your location (not shown in the hero — placement TBD)
   location: "City, Country",
   availability: "Open to full-time roles and freelance projects.", // TODO
   // TODO: interactive placeholder — swap for your real name in the hero

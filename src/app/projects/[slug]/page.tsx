@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, Github as GithubIcon } from "lucide-react";
+import { ArrowUpRight, Github as GithubIcon } from "lucide-react";
 import {
   projects,
   projectSlug,
@@ -51,14 +50,6 @@ export default async function ProjectDetailPage({
   return (
     <div className={PAGE_WRAPPER}>
       <div id="top" className={SECTION_PAD}>
-        {/* back to the listing */}
-        <Link
-          href="/projects"
-          className="mb-6 inline-flex items-center gap-1 text-[13px] font-light text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="size-3.5" /> Projects
-        </Link>
-
         {/* FEATURE IMAGE/VIDEO — same inset-box language as the hero art.
             TODO: drop real cover art or a video into public/projects/ and
             render it here (img under PANEL_INNER); left empty for now. */}
@@ -123,7 +114,7 @@ export default async function ProjectDetailPage({
             <p className="text-sm text-muted-foreground mt-8">{ui.projectDetail.detailsLabel}</p>
             <ul className="mt-3 flex list-none flex-col gap-2.5">
               {p.detailed.map((line, li) => (
-                <li key={li} className="flex gap-2.5 text-sm font-light text-foreground/70">
+                <li key={li} className="flex gap-2.5 text-sm font-light text-foreground/70 text-justify">
                   <span aria-hidden="true" className="text-muted-foreground/70 leading-5 shrink-0">
                     ·
                   </span>

@@ -6,10 +6,14 @@
  */
 
 /** Page column wrapper — main content and footer share this container. */
-export const PAGE_WRAPPER = "max-w-4xl mx-auto px-4 md:px-6";
+export const PAGE_WRAPPER = "max-w-4xl mx-auto px-5 md:px-8";
 
 /** Section body padding inside the page column. */
-export const SECTION_PAD = "px-5 md:px-8 py-8 md:py-10";
+export const SECTION_PAD = "px-6 md:px-10 py-8 md:py-10";
+
+/** Horizontal-only section padding — for rows/strips inside a section that
+ * carry their own vertical padding but must align text edges with SECTION_PAD. */
+export const SECTION_X = "px-6 md:px-10";
 
 /** Small colored tech tag pill — rounded-full card chip with brand icon
  * (tech-stack + experience must stay identical per design decision). */

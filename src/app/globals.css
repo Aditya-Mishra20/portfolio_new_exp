@@ -48,8 +48,7 @@
   --ring: #52525b;
 }
 
-/* Motion token system (dossier §8 — Gogula reference) */
-:root {
+/* Motion token system (dossier §8 — Gogula reference) */:root {
   --motion-duration-instant: 60ms;
   --motion-duration-fast: 0.18s;
   --motion-duration-base: 0.26s;
@@ -113,9 +112,12 @@ main {
   flex-direction: column;
 }
 
-/* every direct page child stretches with it (keeps the home flow intact) */
+/* page wrappers sit in a column flex, so their `mx-auto` would disable
+   cross-axis stretch and let content (e.g. the hero SVG's viewBox width)
+   size them past the viewport — an explicit width keeps every route
+   viewport-wide while `max-w-4xl` + `mx-auto` still cap/center it */
 main > * {
-  flex: 1 0 auto;
+  width: 100%;
 }
 
 /* heading type treatment (Outfit, deliberately small like the reference) */
@@ -124,8 +126,9 @@ main > * {
   letter-spacing: -0.01em;
 }
 
-/* section titles: text-xl font-medium tracking-tight (reference scale) */
-h2.section-title {
+/* section titles: text-xl font-medium tracking-tight (reference scale) —
+   applies to both h2 (sections) and h1 (page titles like /projects) */
+.section-title {
   font-weight: 500;
   letter-spacing: -0.02em;
   font-size: 1.25rem;

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { profile, ui } from "@/content/site";
 import { usePageViews } from "@/components/providers";
 import { Separator } from "@/components/ui/separator";
-import { PANEL_INNER, PANEL_OUTER, PAGE_WRAPPER } from "@/lib/styles";
+import { PANEL_INNER, PANEL_OUTER, PAGE_WRAPPER, SECTION_X } from "@/lib/styles";
 
 /**
  * Footer — Tiwari-style art band: inset art panel (same box language as the
@@ -88,7 +88,7 @@ export function Footer() {
           {!isHome ? (
             /* non-home: no art band — just the copyright strip,
                restyled for the plain background (no scrim) */
-            <div className="px-5 md:px-8 py-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground">
+            <div className={`${SECTION_X} py-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground`}>
               <span>
                 © {new Date().getFullYear()}{" "}
                 <a href="#" className="underline underline-offset-2 decoration-border hover:text-foreground transition-colors">{profile.name}</a>
@@ -102,7 +102,7 @@ export function Footer() {
             </div>
           ) : (
           /* art panel (same box design as the hero art) */
-          <div className="px-5 md:px-8 py-8">
+          <div className={`${SECTION_X} py-8`}>
             <div className={`relative w-full ${PANEL_OUTER}`}>
               <div className={`relative h-full w-full ${PANEL_INNER}`}>
                 <FooterArt />

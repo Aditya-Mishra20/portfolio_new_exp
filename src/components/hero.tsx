@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Calendar, Download, Github, Linkedin, Mail } from "lucide-react";
 import { profile, email, calcomUrl, socials, resumeUrl, ui } from "@/content/site";
 import { XBrand } from "@/components/brand-icons";
-import { EASE_STANDARD, PANEL_INNER, PANEL_OUTER, SECTION_PAD, SOCIAL_CHIP } from "@/lib/styles";
+import { FlipWords } from "@/components/ui/flip-words";
+import { EASE_STANDARD, PANEL_INNER, PANEL_OUTER, SECTION_PAD, SECTION_X, SOCIAL_CHIP } from "@/lib/styles";
 import { Separator } from "@/components/ui/separator";
 
 /** Abstract placeholder hero art — TODO: replace with your own art. */
@@ -87,7 +88,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: EASE_STANDARD }}
-        className="px-5 md:px-8 py-7 flex items-center gap-4"
+        className={`${SECTION_X} py-7 flex items-center gap-4`}
       >
         {/* same inset-box language as the art panel above */}
         <div className={`relative shrink-0 ${PANEL_OUTER}`}>
@@ -103,10 +104,10 @@ export function Hero() {
         <div>
           <h1 className="font-medium text-xl leading-5 font-heading flex items-center gap-1.5">
             {profile.name}
-            <span className="text-foreground/40">.</span>
           </h1>
-          <p className="text-sm text-foreground/60 mt-1.5 font-light">
-            {profile.role} · {profile.location}
+          {/* role flips through profile.roles (cycling words) — city/country removed */}
+          <p className="text-sm text-foreground/60 mt-1.5 font-light h-5 overflow-hidden">
+            <FlipWords words={profile.roles} className="text-sm text-foreground/60 font-light" />
           </p>
         </div>
       </motion.div>
@@ -114,7 +115,7 @@ export function Hero() {
       <Separator />
 
       {/* ROW 3 — bio (spans the container end to end) */}
-      <div className="px-5 md:px-8 py-7">
+      <div className={`${SECTION_X} py-7`}>
         <p className="text-sm text-foreground/60 leading-relaxed font-light text-justify">
           {profile.bio}
         </p>
@@ -126,7 +127,7 @@ export function Hero() {
         </div>
 
         {/* Socials lead-in, then Resume + socials row */}
-        <p className="mt-5 text-sm text-foreground/60 font-light">{ui.socialsLeadIn}</p>
+        <p className="mt-5 text-sm text-foreground/60 font-light text-justify">{ui.socialsLeadIn}</p>
         <div className="mt-2.5 flex flex-wrap gap-2 items-center">
           <a href={resumeUrl} className={SOCIAL_CHIP}>
             <Download className="size-3.5" /> Resume

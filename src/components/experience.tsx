@@ -56,9 +56,11 @@ export function Row({ item, i }: { item: RowData; i: number }) {
         >
           {/* left: role (title) + type pill, organization under it */}
           <span className="flex-1 min-w-0">
-            <span className="flex items-center gap-2.5">
-              <span className="text-sm font-medium font-heading text-foreground">{item.title}</span>
-              <span className="text-[10px] font-light text-muted-foreground border rounded-sm px-1.5 py-0.5 uppercase tracking-wide">
+            <span className="flex items-center gap-1.5">
+              <span className="text-[13px] sm:text-sm font-medium font-heading text-foreground">{item.title}</span>
+              {/* pill shrinks on small screens so it hugs the title instead of
+                  fighting it for width */}
+              <span className="text-[9px] sm:text-[10px] font-light text-muted-foreground border rounded-sm px-1 sm:px-1.5 py-[1px] uppercase tracking-wide whitespace-nowrap">
                 {item.type}
               </span>
             </span>

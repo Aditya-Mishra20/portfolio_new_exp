@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowUp, FileText, Menu, Moon, Search, Sun, X, Bot,
+  ArrowUp, CircleChevronLeft, FileText, Menu, Moon, Search, Sun, X, Bot,
 } from "lucide-react";
 import { useTheme } from "next-themes";
+import { usePathname, useRouter } from "next/navigation";
 import { useCommandPalette, scrollToId } from "@/components/providers";
 import { navSections, resumeUrl, ui } from "@/content/site";
 import { cn } from "@/lib/utils";
@@ -68,6 +69,34 @@ function ScrollRing() {
         )}
       </span>
     </button>
+  );
+}
+
+/** Back button — dock-only navigation to the previous page. Hidden on the
+ * home route (nothing to go "back" into) and slides in/out so the pill
+ * grows/shrinks smoothly between routes. router.back() follows real browser
+ * history, unlike a hard link home. */
+function BackButton() {
+  const pathname = usePathname();
+  const router = useRouter();
+  const onHome = pathname === "/";
+  return (
+    <AnimatePresence initial={false}>
+      {!onHome && (
+        <motion.button
+          key="dock-back"
+          initial={{ opacity: 0, scale: 0.6 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.6 }}
+          transition={{ duration: 0.18, ease: EASE_STANDARD }}
+          onClick={() => router.back()}
+          aria-label="Back to previous page"
+          className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-foreground/80 hover:bg-foreground/5 dark:hover:bg-foreground/10 hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring transition-colors cursor-pointer"
+        >
+          <CircleChevronLeft className="size-4" />
+        </motion.button>
+      )}
+    </AnimatePresence>
   );
 }
 
@@ -171,6 +200,7 @@ export function DockPill() {
         {/* divider recovered from the reference pill */}
         <div className="mx-1 h-4 w-0 shrink-0 border-l border-border" />
 
+        <BackButton />
         <ThemeButton />
 
         {/* AI chat bot — opens the chat widget via the shared event it listens for */}

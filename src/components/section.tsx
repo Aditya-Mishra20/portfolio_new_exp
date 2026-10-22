@@ -24,7 +24,7 @@ export function Section({
     <div id={id} className={`relative scroll-mt-16 ${SECTION_PAD}`}>
       {title && (
         <Reveal>
-          <div className="flex justify-between items-end">
+          <div className="flex justify-between items-baseline">
             <h2 className="section-title font-heading">{title}</h2>
             {actions}
           </div>
