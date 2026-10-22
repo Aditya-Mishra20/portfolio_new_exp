@@ -9,6 +9,7 @@ import { useTheme } from "next-themes";
 import { useCommandPalette, scrollToId } from "@/components/providers";
 import { navSections, resumeUrl, ui } from "@/content/site";
 import { cn } from "@/lib/utils";
+import { EASE_STANDARD } from "@/lib/styles";
 
 /* ------------------------------------------------------------------ */
 /* Floating dock pill (fixed bottom-center), recovered from the        */
@@ -105,7 +106,7 @@ function MobileMenu() {
             initial={{ opacity: 0, y: 8, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.97 }}
-            transition={{ duration: 0.18, ease: [0.2, 0, 0, 1] }}
+            transition={{ duration: 0.18, ease: EASE_STANDARD }}
             className="absolute bottom-11 right-0 w-44 rounded-lg border border-border bg-popover text-popover-foreground p-1.5 shadow-xl"
           >
             {navSections.map((s) => (
@@ -155,7 +156,7 @@ export function DockPill() {
         >
           <Search className="size-[14px] shrink-0 text-muted-foreground" />
           <span aria-hidden="true" className="flex-1 text-left text-[12.5px] truncate">
-            {ui.chat.askLabel}
+            {ui.chat.dockSearch}
           </span>
           <span aria-hidden="true" className="hidden sm:flex items-center gap-1 shrink-0">
             <kbd className="flex h-[18px] min-w-[18px] items-center justify-center rounded-[6px] bg-foreground/10 px-1 text-[11px] font-medium leading-none text-muted-foreground">

@@ -94,6 +94,7 @@ export function Providers({ children }: { children: ReactNode }) {
 export function usePageViews(path: string) {
   const [views, setViews] = useState<number | null>(null);
   const fetchIt = useCallback(() => {
+    if (!path) return; // gated: footer passes "" on routes without the overlay
     fetch(`/api/views?path=${encodeURIComponent(path)}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {

@@ -4,7 +4,7 @@ import {
   siJavascript, siMongodb, siMysql, siNeon, siNextdotjs, siNodedotjs,
   siNotion, siOpenjdk, siPostgresql, siPostman, siRadixui, siReact,
   siRedis, siRedux, siShadcnui, siSpringboot, siTailwindcss, siTrae,
-  siTypescript,
+  siTypescript, siX,
 } from "simple-icons";
 import { Cloud, Database, Palette, Image, Zap, Terminal } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -17,6 +17,15 @@ import { cn } from "@/lib/utils";
  * to a lucide glyph.
  */
 type SiIcon = { title: string; hex: string; path: string };
+
+/** X (Twitter) brand mark — hero socials use the real glyph (no lucide bird). */
+export function XBrand({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d={siX.path} />
+    </svg>
+  );
+}
 
 const siMap: Record<string, SiIcon> = {
   typescript: siTypescript,

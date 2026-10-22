@@ -48,7 +48,14 @@ export type Project = {
   /** Hover-preview art: "/projects/<name>.png" from public/ — TODO: real screenshots.
    * Falls back to placeholder art when unset (never position-dependent). */
   imageSrc?: string;
+  /** Detail-page bullet points ("/projects/<slug>") — TODO: real write-ups. */
+  detailed?: string[];
 };
+
+/** One slug derivation (title → "project-alpha") — home rows, /projects,
+ * detail pages, and sitemap all call this so URLs can never drift. */
+export const projectSlug = (title: string) =>
+  title.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
 export const projects: Project[] = [
   {
@@ -56,9 +63,17 @@ export const projects: Project[] = [
     description:
       "Placeholder for your first project — a full-stack platform showcasing your primary strength.",
     status: "ongoing",
-    tech: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind"],
+    tech: ["Next.js", "TypeScript", "PostgreSQL", "Tailwind CSS"],
     github: "https://github.com/your-handle/alpha", // TODO
     live: "https://alpha.example.com", // TODO
+    detailed: [
+      // TODO: replace with the real project breakdown
+      "Placeholder bullet — what the project does and who it serves.",
+      "Placeholder bullet — the problem it solves and your approach.",
+      "Placeholder bullet — architecture highlights worth mentioning.",
+      "Placeholder bullet — an interesting technical challenge you handled.",
+      "Placeholder bullet — measurable outcome (users, perf, uptime…).",
+    ],
   },
   {
     title: "Project Beta",
@@ -67,6 +82,13 @@ export const projects: Project[] = [
     status: "building",
     tech: ["React", "Node.js", "Redis"],
     github: "https://github.com/your-handle/beta", // TODO
+    detailed: [
+      // TODO: replace with the real project breakdown
+      "Placeholder bullet — what the tool does and where it fits.",
+      "Placeholder bullet — the design decisions behind it.",
+      "Placeholder bullet — how it is tested and released.",
+      "Placeholder bullet — adoption or usage notes.",
+    ],
   },
   {
     title: "Project Gamma",
@@ -76,8 +98,29 @@ export const projects: Project[] = [
     tech: ["Next.js", "Drizzle", "Neon"],
     github: "https://github.com/your-handle/gamma", // TODO
     live: "https://gamma.example.com", // TODO
+    detailed: [
+      // TODO: replace with the real project breakdown
+      "Placeholder bullet — the shipped scope of the product.",
+      "Placeholder bullet — your role and key contributions.",
+      "Placeholder bullet — lessons learned / what you'd do differently.",
+      "Placeholder bullet — links to write-ups or demos.",
+    ],
   },
 ];
+
+/** Chip metadata lookup: project `tech` entries are plain names; this finds
+ * the matching slug/URL already defined in techStack so project pages render
+ * the exact same chip UI (brand icon + outbound link) where possible.
+ * Unmatched names fall back to a non-linked lucide-glyph chip. */
+export const techChipByName = (
+  name: string
+): { slug?: string; url?: string } => {
+  for (const items of Object.values(techStack)) {
+    const hit = items.find((t) => t.name.toLowerCase() === name.toLowerCase());
+    if (hit) return { slug: hit.slug, url: hit.url };
+  }
+  return {};
+};
 
 /**
  * Tech stack — Ashish-style categories with outbound chips.
@@ -114,6 +157,9 @@ export const techStack: Record<string, { name: string; slug?: string; url: strin
     { name: "Docker", slug: "docker", url: "https://www.docker.com" },
     { name: "Git", slug: "git", url: "https://git-scm.com" },
     { name: "GitHub", slug: "github", url: "https://github.com" },
+    { name: "PostgreSQL", slug: "postgresql", url: "https://www.postgresql.org" },
+    { name: "Drizzle", slug: "drizzle", url: "https://orm.drizzle.team" },
+    { name: "Neon", slug: "neon", url: "https://neon.tech" },
     { name: "Postman", slug: "postman", url: "https://www.postman.com" },
     { name: "DBeaver", slug: "dbeaver", url: "https://dbeaver.io" },
     { name: "MobaXterm", url: "https://mobaxterm.mobatek.net" }, // lucide fallback
@@ -149,8 +195,8 @@ export const experience: ExperienceItem[] = [
     // TODO: most recent role
     company: "Company Name",
     role: "Full-Stack Developer",
-    type: "Full-time",
-    period: "2025 — Present",
+    type: "Full-time",    /** Format: Mon YY — Mon YY (e.g. "Jun 25 — Aug 26"); use "Present" for current role */
+    period: "Jun 25 — Present", // TODO
     location: "Your City, India - Remote", // TODO: role location
     bullets: [
       "Placeholder achievement bullet — describe impact with numbers where possible.",
@@ -163,12 +209,55 @@ export const experience: ExperienceItem[] = [
     company: "Previous Company",
     role: "Frontend Developer",
     type: "Internship",
-    period: "2024 — 2025",
+    period: "Mar 24 — Jun 25", // TODO (same Mon YY — Mon YY format)
     location: "Your City, India - On-site", // TODO: role location
     bullets: [
       "Placeholder achievement bullet — your core contribution.",
     ],
     tech: ["React", "Tailwind CSS"],
+  },
+];
+
+/** Education drag-in. Renders like the experience dropdown rows:
+ * degree on the first line, institution under it. */
+export type EducationItem = {
+  institution: string;
+  /** e.g. "B.Tech, Computer Science" — the first visible line */
+  degree: string;
+  /** pill on the title line — e.g. "Bachelor's" / "Class XII" */
+  type: string;
+  /** same Mon YY — Mon YY format as experience */
+  period: string;
+  location: string;
+  bullets: string[];
+};
+
+export const education: EducationItem[] = [
+  {
+    // TODO: most recent / highest qualification
+    institution: "Your University", // TODO
+    degree: "B.Tech, Computer Science",
+    type: "Bachelor's",
+    period: "Aug 21 — Jun 25", // TODO
+    location: "Your City, India - On-site", // TODO
+    bullets: [
+      // TODO: real coursework, GPA, achievements
+      "Placeholder bullet — relevant coursework and focus areas.",
+      "Placeholder bullet — projects, GPA, or honors worth noting.",
+      "Placeholder bullet — clubs, leadership, or activities.",
+    ],
+  },
+  {
+    // TODO: earlier qualification
+    institution: "Your School", // TODO
+    degree: "Class XII, Science Stream",
+    type: "Higher Secondary",
+    period: "Jun 19 — Jun 21", // TODO
+    location: "Your City, India - On-site", // TODO
+    bullets: [
+      // TODO: real highlights
+      "Placeholder bullet — stream, percentage, or board highlights.",
+    ],
   },
 ];
 
@@ -199,10 +288,29 @@ export const ui = {
       // rendered as `${profile.availability} ${introLead}`
       introLead: "The fastest way to reach me is a short call or email.",
     },
+    education: {
+      title: "Education", // TODO
+      intro: "Where I studied and what I focused on. Click a degree to expand it.", // TODO
+    },
+  },
+  /** /projects listing page (same row UI as the home section). */
+  projectsPage: {
+    title: "Projects",
+    intro: "Everything I've built so far. Click a project for the full breakdown.", // TODO
+  },
+  /** /projects/[slug] detail page labels. */
+  projectDetail: {
+    stackLabel: "Tech Stack", // TODO
+    detailsLabel: "Detailed Description", // TODO
+    liveLabel: "Live", // TODO
+    sourceLabel: "Source", // TODO
   },
   chat: {
     greeting: `Hi! I'm ${profile.name}'s README bot. Ask me anything about this portfolio — projects, stack, experience, contact.`,
     askLabel: "Ask me anything",
+    /** Visible label on the dock's search trigger (aria-label stays `askLabel`
+     * so screen readers announce intent; the kbd chips already show "Ctrl K"). */
+    dockSearch: "Search",
     /** /md routes the chat widget fetches to build its retrieval index — keep in sync
      * with content/markdown.ts, which owns the actual doc contents (server-only). */
     docRoutes: ["/md/profile.md", "/md/projects.md", "/md/experience.md", "/md/contact.md"],

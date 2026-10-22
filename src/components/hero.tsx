@@ -1,8 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight, Calendar, Download, Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { ArrowUpRight, Calendar, Download, Github, Linkedin, Mail } from "lucide-react";
 import { profile, email, calcomUrl, socials, resumeUrl, ui } from "@/content/site";
+import { XBrand } from "@/components/brand-icons";
+import { EASE_STANDARD, PANEL_INNER, PANEL_OUTER, SECTION_PAD, SOCIAL_CHIP } from "@/lib/styles";
 import { Separator } from "@/components/ui/separator";
 
 /** Abstract placeholder hero art — TODO: replace with your own art. */
@@ -25,21 +27,24 @@ function HeroArt({ dark }: { dark: boolean }) {
   );
 }
 
-/** Solid quiet CTA (13px, font-light, arrow nudge on hover). */
+/** Solid quiet CTA (13px, font-light, arrow nudge on hover).
+ * `icon` takes an ELEMENT (not a component function) so SolidCta can be
+ * called from server components — lucide has no "use client" directive,
+ * so passing icon *references* across the boundary would fail. */
 export function SolidCta({
   href,
   children,
-  icon: Icon,
+  icon,
 }: {
   href?: string;
   children: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ReactNode;
 }) {
   const cls =
     "cursor-pointer group/button inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-sm text-[13px] font-light h-9 px-2.5 bg-foreground text-background transition-all hover:opacity-90 outline-none focus-visible:ring-2 ring-ring";
   const inner = (
     <>
-      <Icon className="size-3.5 opacity-80" />
+      {icon}
       {children}
       <ArrowUpRight className="size-3.5 opacity-60 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
     </>
@@ -55,16 +60,13 @@ export function SolidCta({
   );
 }
 
-const chipCls =
-  "inline-flex text-xs font-light items-center gap-1.5 whitespace-nowrap px-3 py-1.5 rounded-md border border-border bg-secondary hover:bg-secondary/60 text-secondary-foreground transition-all";
-
 export function Hero() {
   return (
     <div>
       {/* ROW 1 — themed hero art, inset from the frame (the "gap") */}
-      <div className="px-5 md:px-8 py-8 md:py-10">
-        <div className="relative w-full aspect-[640/220] rounded-lg shadow-ax bg-muted/15 p-1.5">
-          <div className="h-full w-full border rounded-md bg-muted overflow-hidden relative">
+      <div className={SECTION_PAD}>
+        <div className={`relative w-full aspect-[640/220] ${PANEL_OUTER}`}>
+          <div className={`h-full w-full relative bg-muted ${PANEL_INNER}`}>
             <div className="absolute inset-0 flex items-center justify-center p-3">
               <div className="hero-art-light w-full">
                 <HeroArt dark={false} />
@@ -84,11 +86,11 @@ export function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.3, ease: [0.2, 0, 0, 1] }}
+        transition={{ duration: 0.3, ease: EASE_STANDARD }}
         className="px-5 md:px-8 py-7 flex items-center gap-4"
       >
         {/* same inset-box language as the art panel above */}
-        <div className="relative rounded-lg shadow-ax bg-muted/15 p-1.5 shrink-0">
+        <div className={`relative shrink-0 ${PANEL_OUTER}`}>
           {/* TODO: swap unsplash placeholder for your photo */}
           <img
             src={profile.avatarUrl}
@@ -119,24 +121,24 @@ export function Hero() {
 
         {/* CTAs */}
         <div className="mt-5 flex flex-wrap gap-2.5 items-center">
-          <SolidCta href={calcomUrl} icon={Calendar}>{ui.cta.bookCall}</SolidCta>
-          <SolidCta icon={Mail}>{ui.cta.sendEmail}</SolidCta>
+          <SolidCta href={calcomUrl} icon={<Calendar className="size-3.5 opacity-80" />}>{ui.cta.bookCall}</SolidCta>
+          <SolidCta icon={<Mail className="size-3.5 opacity-80" />}>{ui.cta.sendEmail}</SolidCta>
         </div>
 
         {/* Socials lead-in, then Resume + socials row */}
         <p className="mt-5 text-sm text-foreground/60 font-light">{ui.socialsLeadIn}</p>
         <div className="mt-2.5 flex flex-wrap gap-2 items-center">
-          <a href={resumeUrl} className={chipCls}>
+          <a href={resumeUrl} className={SOCIAL_CHIP}>
             <Download className="size-3.5" /> Resume
           </a>
-          <a href={socials.github} target="_blank" rel="noreferrer" className={chipCls}>
+          <a href={socials.github} target="_blank" rel="noreferrer" className={SOCIAL_CHIP}>
             <Github className="size-3.5" /> GitHub
           </a>
-          <a href={socials.linkedin} target="_blank" rel="noreferrer" className={chipCls}>
+          <a href={socials.linkedin} target="_blank" rel="noreferrer" className={SOCIAL_CHIP}>
             <Linkedin className="size-3.5" /> LinkedIn
           </a>
-          <a href={socials.twitter} target="_blank" rel="noreferrer" className={chipCls}>
-            <Twitter className="size-3.5" /> X
+          <a href={socials.twitter} target="_blank" rel="noreferrer" className={SOCIAL_CHIP}>
+            <XBrand className="size-3.5" /> Twitter
           </a>
         </div>
       </div>

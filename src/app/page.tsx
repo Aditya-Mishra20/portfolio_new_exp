@@ -1,11 +1,11 @@
-"use client";
-
 import { Hero } from "@/components/hero";
 import { ProjectList } from "@/components/project-list";
 import { TechStack } from "@/components/tech-stack";
 import { Experience } from "@/components/experience";
+import { Education } from "@/components/education";
 import { Contact } from "@/components/contact";
 import { Separator } from "@/components/ui/separator";
+import { PAGE_WRAPPER } from "@/lib/styles";
 
 /**
  * No vertical frame lines (user removed them) — sections carry their own
@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
  */
 export default function Home() {
   return (
-    <div id="top" className="max-w-4xl mx-auto px-4 md:px-6">
+    <div id="top" className={PAGE_WRAPPER}>
       <Hero />
       <Separator />
       <ProjectList />
@@ -21,6 +21,8 @@ export default function Home() {
       <TechStack />
       <Separator />
       <Experience />
+      <Separator />
+      <Education />
       <Separator />
       <Contact />
     </div>

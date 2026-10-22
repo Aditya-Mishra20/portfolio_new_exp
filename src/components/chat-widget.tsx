@@ -4,6 +4,7 @@ import { Send, X, Bot, User } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ui } from "@/content/site";
+import { EASE_EMPHASIZED } from "@/lib/styles";
 
 /* ------------------------------------------------------------------ */
 /* AI Q&A chat. Placeholder logic: it downloads the site's own /md     */
@@ -157,7 +158,7 @@ export function ChatWidget() {
             initial={{ opacity: 0, y: 12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.98 }}
-            transition={{ duration: 0.18, ease: [0.2, 0.8, 0.2, 1] }}
+            transition={{ duration: 0.18, ease: EASE_EMPHASIZED }}
             className="fixed bottom-40 right-5 sm:bottom-20 sm:right-6 z-40 flex max-h-[70vh] w-[min(380px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-xl"
           >
             <div className="flex items-center gap-2 border-b border-border px-4 py-3">

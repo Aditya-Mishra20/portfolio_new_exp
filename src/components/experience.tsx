@@ -7,11 +7,12 @@ import { experience, ui, type ExperienceItem } from "@/content/site";
 import { BrandIcon } from "@/components/brand-icons";
 import { Section } from "@/components/section";
 import { Reveal } from "@/components/reveal";
+import { EASE_STANDARD, TECH_CHIP } from "@/lib/styles";
 
 /**
  * Experience — Tiwari-style expandable rows (screenshot reference):
- *   collapsed: Company [Type pill]        period
- *              role                       location - Remote    ⌄
+ *   collapsed: role [Type pill]           period
+ *              company                    location             ⌄
  *   expanded:  bullets + tech chips.
  * NOTE (user): no company logo square box. Dropdown via chevron toggle.
  */
@@ -28,8 +29,23 @@ function BoldText({ text }: { text: string }) {
   );
 }
 
-function Row({ job, i }: { job: ExperienceItem; i: number }) {
-  const [open, setOpen] = useState(i === 0); // first role expanded by default
+/** Generic expandable row shape shared by Experience + Education rows. */
+export type RowData = {
+  /** first visible line — the person's role (experience) or degree (education) */
+  title: string;
+  /** second line — organization (experience) or institution (education) */
+  subtitle: string;
+  /** uppercase pill on the title line */
+  type: string;
+  period: string;
+  location: string;
+  bullets: string[];
+  /** optional chip row under the bullets (experience only) */
+  tech?: string[];
+};
+
+export function Row({ item, i }: { item: RowData; i: number }) {
+  const [open, setOpen] = useState(i === 0); // first row expanded by default
   return (
     <Reveal delay={i * 0.04}>
       <div className="py-5">
@@ -38,20 +54,20 @@ function Row({ job, i }: { job: ExperienceItem; i: number }) {
           aria-expanded={open}
           className="group flex w-full flex-wrap items-center gap-x-3 gap-y-1 text-left min-w-0 cursor-pointer"
         >
-          {/* left: company + type pill, role under it */}
+          {/* left: role (title) + type pill, organization under it */}
           <span className="flex-1 min-w-0">
             <span className="flex items-center gap-2.5">
-              <span className="text-sm font-medium font-heading text-foreground">{job.company}</span>
+              <span className="text-sm font-medium font-heading text-foreground">{item.title}</span>
               <span className="text-[10px] font-light text-muted-foreground border rounded-sm px-1.5 py-0.5 uppercase tracking-wide">
-                {job.type}
+                {item.type}
               </span>
             </span>
-            <span className="mt-0.5 block text-sm text-foreground/50 font-light">{job.role}</span>
+            <span className="mt-0.5 block text-sm text-foreground/50 font-light">{item.subtitle}</span>
           </span>
           {/* right: period over location, chevron */}
           <span className="flex flex-col items-end gap-0.5">
-            <span className="font-mono text-[11px] text-muted-foreground whitespace-nowrap">{job.period}</span>
-            <span className="font-mono text-[11px] text-muted-foreground/60 whitespace-nowrap">{job.location}</span>
+            <span className="font-mono text-[11px] text-muted-foreground whitespace-nowrap">{item.period}</span>
+            <span className="font-mono text-[11px] text-muted-foreground/60 whitespace-nowrap">{item.location}</span>
           </span>
           <ChevronDown
             className={`size-4 text-muted-foreground transition-transform duration-200 ${open ? "rotate-180" : ""}`}
@@ -65,28 +81,27 @@ function Row({ job, i }: { job: ExperienceItem; i: number }) {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}
+              transition={{ duration: 0.25, ease: EASE_STANDARD }}
               className="overflow-hidden"
             >
               <ul className="mt-4 space-y-1.5 pl-4 text-sm text-foreground/60 font-light leading-relaxed text-justify">
-                {job.bullets.map((b, j) => (
+                {item.bullets.map((b, j) => (
                   <li key={j} className="list-disc marker:text-foreground/30">
                     <BoldText text={b} />
                   </li>
                 ))}
               </ul>
-              {/* same chip design as Tech Stack */}
-              <div className="mt-3.5 flex flex-wrap gap-1.5">
-                {job.tech.map((t) => (
-                  <span
-                    key={t}
-                    className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-border bg-card px-2 py-0.5 text-[11.5px] text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <BrandIcon name={t} className="h-3 w-3" />
-                    {t}
-                  </span>
-                ))}
-              </div>
+              {/* same chip design as Tech Stack — shared TECH_CHIP token */}
+              {item.tech && item.tech.length > 0 && (
+                <div className="mt-3.5 flex flex-wrap gap-1.5">
+                  {item.tech.map((t) => (
+                    <span key={t} className={TECH_CHIP}>
+                      <BrandIcon name={t} className="h-3 w-3" />
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -97,10 +112,14 @@ function Row({ job, i }: { job: ExperienceItem; i: number }) {
 
 export function Experience() {
   return (
-    <Section title={ui.sections.experiences.title} intro={ui.sections.experiences.intro}>
+    <Section id="experience" title={ui.sections.experiences.title} intro={ui.sections.experiences.intro}>
       <div className="divide-y divide-border">
         {experience.map((job, i) => (
-          <Row key={job.company + job.period} job={job} i={i} />
+          <Row
+            key={job.company + job.period}
+            item={{ title: job.role, subtitle: job.company, type: job.type, period: job.period, location: job.location, bullets: job.bullets, tech: job.tech }}
+            i={i}
+          />
         ))}
       </div>
     </Section>

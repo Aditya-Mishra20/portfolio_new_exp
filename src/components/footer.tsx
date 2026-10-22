@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { profile, ui } from "@/content/site";
 import { usePageViews } from "@/components/providers";
 import { Separator } from "@/components/ui/separator";
+import { PANEL_INNER, PANEL_OUTER, PAGE_WRAPPER } from "@/lib/styles";
 
 /**
  * Footer — Tiwari-style art band: inset art panel (same box language as the
@@ -68,22 +70,43 @@ function FooterArt() {
 }
 
 export function Footer() {
-  const views = usePageViews("/");
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  // visitor count + clock + art band are a home-page signature — other routes
+  // render only the copyright strip
+  const views = usePageViews(isHome ? "/" : "");
   const now = useClock();
   const agentLinks = ui.footer.agentLinks;
 
   return (
     <footer>
-      {/* pb keeps the footer clear of the fixed dock pill */}
-      <div className="max-w-4xl mx-auto px-4 md:px-6 pb-32 md:pb-24">
+      {/* pb keeps the footer clear of the fixed dock pill — tighter on
+          non-home routes (bare copyright strip vs the tall art band) */}
+      <div className={`${PAGE_WRAPPER} ${isHome ? "pb-32 md:pb-24" : "pb-20"}`}>
         <div className="relative">
           <Separator />
-          {/* art panel (same box design as the hero art) */}
+          {!isHome ? (
+            /* non-home: no art band — just the copyright strip,
+               restyled for the plain background (no scrim) */
+            <div className="px-5 md:px-8 py-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground">
+              <span>
+                © {new Date().getFullYear()}{" "}
+                <a href="#" className="underline underline-offset-2 decoration-border hover:text-foreground transition-colors">{profile.name}</a>
+                . {ui.footer.copyrightNote}
+              </span>
+              {agentLinks.map((l) => (
+                <a key={l.label} href={l.href} className="underline underline-offset-2 decoration-border hover:text-foreground transition-colors">
+                  {l.label}
+                </a>
+              ))}
+            </div>
+          ) : (
+          /* art panel (same box design as the hero art) */
           <div className="px-5 md:px-8 py-8">
-            <div className="relative w-full overflow-hidden rounded-lg shadow-ax p-1.5 bg-muted/15">
-              <div className="relative h-full w-full border rounded-md overflow-hidden">
+            <div className={`relative w-full ${PANEL_OUTER}`}>
+              <div className={`relative h-full w-full ${PANEL_INNER}`}>
                 <FooterArt />
-                {/* overlay: visitor count + live clock + copyright row */}
+                {/* overlay: visitor count + live clock (home page only) */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 text-center px-4 pb-6">
                   <p className="text-sm font-medium text-white drop-shadow">
                     You're the{" "}
@@ -110,6 +133,7 @@ export function Footer() {
               </div>
             </div>
           </div>
+          )}
         </div>
       </div>
     </footer>

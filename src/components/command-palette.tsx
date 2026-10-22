@@ -88,7 +88,7 @@ export function CommandPalette() {
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Portal>
         <Dialog.Overlay data-cmdk-overlay />
-        <Dialog.Content data-cmdk-content aria-describedby={undefined}>
+        <Dialog.Content data-cmdk-content aria-describedby={undefined} data-lenis-prevent>
           <Dialog.Title className="sr-only">Command palette</Dialog.Title>
           <Command label="Command palette" loop className="flex flex-col">
             <div className="flex items-center gap-2 border-b border-border px-4">

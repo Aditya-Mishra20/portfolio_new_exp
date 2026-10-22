@@ -12,6 +12,7 @@
  */
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 
+import Link from "next/link";
 import { encode } from "qss";
 import React from "react";
 import { ArrowUpRight, Github as GithubIcon } from "lucide-react";
@@ -33,6 +34,12 @@ type LinkPreviewProps = {
   /** Optional caption under the art (e.g. project host) + live/source links */
   caption?: string;
   githubUrl?: string;
+  /** `url` is app-internal ("/projects/...") — the trigger navigates via the
+   * client router in the same tab (not target=_blank). */
+  internal?: boolean;
+  /** Card's "live" button target (defaults to `url`) — lets an internal
+   * trigger still deep-link to the project's real live site. */
+  liveUrl?: string;
 } & (
   | { isStatic: true; imageSrc: string }
   | { isStatic?: false; imageSrc?: never }
@@ -49,6 +56,8 @@ export const LinkPreview = ({
   imageSrc = "",
   caption,
   githubUrl,
+  internal = false,
+  liveUrl,
 }: LinkPreviewProps) => {
   let src;
   if (!isStatic) {
@@ -110,14 +119,15 @@ export const LinkPreview = ({
           onMouseMove={handleMouseMove}
           href={url}
         >
-          <a
-            href={url}
-            target="_blank"
-            rel="noreferrer"
-            className={cn("text-foreground", className)}
-          >
-            {children}
-          </a>
+          {internal ? ( // same-tab, client-router navigation
+            <Link href={url} className={cn("text-foreground", className)}>
+              {children}
+            </Link>
+          ) : (
+            <a href={url} target="_blank" rel="noreferrer" className={cn("text-foreground", className)}>
+              {children}
+            </a>
+          )}
         </HoverCardPrimitive.Trigger>
 
         <HoverCardPrimitive.Content
@@ -143,7 +153,7 @@ export const LinkPreview = ({
                 <div className="block p-1.5 bg-card border border-border rounded-md w-[280px]">
                   <a
                     href={url}
-                    target="_blank"
+                    target={internal ? undefined : "_blank"}
                     rel="noreferrer"
                     aria-label={`Open ${caption ?? url}`}
                     className="block overflow-hidden rounded-sm border border-border bg-muted"
@@ -162,7 +172,7 @@ export const LinkPreview = ({
                   {(caption || githubUrl || url) && (
                     <div className="flex items-center justify-between px-1 pt-1.5 pb-0.5">
                       <span className="font-mono text-[10px] text-muted-foreground truncate">
-                        {caption ?? new URL(url).host}
+                        {caption ?? new URL(url, "http://x.invalid").host}
                       </span>
                       <span className="flex items-center gap-1.5">
                         {githubUrl && (
@@ -176,8 +186,9 @@ export const LinkPreview = ({
                             <GithubIcon className="size-3" />
                           </a>
                         )}
+                        {/* card "live" button — external liveUrl beats internal url */}
                         <a
-                          href={url}
+                          href={liveUrl ?? url}
                           target="_blank"
                           rel="noreferrer"
                           aria-label="Live site"

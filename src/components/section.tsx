@@ -1,12 +1,11 @@
-"use client";
-
 import type { ReactNode } from "react";
 import { Reveal } from "@/components/reveal";
+import { SECTION_PAD } from "@/lib/styles";
 
 /**
- * Section container: horizontal padding, quiet `text-xl font-medium`
- * headings, justified intros; seams use the shadcn/radix Separator
- * rendered by page.tsx between sections.
+ * Section container: horizontal padding, quiet `.section-title` headings
+ * (1.25rem / 500 via globals.css), justified intros; seams use the
+ * shadcn/radix Separator rendered by page.tsx between sections.
  */
 export function Section({
   id,
@@ -22,7 +21,7 @@ export function Section({
   intro?: string;
 }) {
   return (
-    <div id={id} className="relative scroll-mt-16 px-5 md:px-8 py-8 md:py-10">
+    <div id={id} className={`relative scroll-mt-16 ${SECTION_PAD}`}>
       {title && (
         <Reveal>
           <div className="flex justify-between items-end">

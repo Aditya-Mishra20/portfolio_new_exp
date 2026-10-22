@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
+import { EASE_STANDARD } from "@/lib/styles";
 
 /**
  * Quiet single fade-in — one orchestrated system for section entrances,
@@ -24,7 +25,7 @@ export function Reveal({
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.3, delay, ease: [0.2, 0, 0, 1] }}
+      transition={{ duration: 0.3, delay, ease: EASE_STANDARD }}
     >
       {children}
     </motion.div>

@@ -1,22 +1,18 @@
-"use client";
-
-import { techStack } from "@/content/site";
+import { ui, techStack } from "@/content/site";
 import { BrandIcon } from "@/components/brand-icons";
+import { Section } from "@/components/section";
 import { Reveal } from "@/components/reveal";
+import { TECH_CHIP } from "@/lib/styles";
 
 /**
- * Tech Stack — reference-site pattern:
- *   h2 text-base font-medium · category `p text-sm text-muted-foreground`
- *   chips = outbound links: rounded-full border bg-card + colored brand icon
- * Chips kept small per user feedback (px-2 py-0.5).
+ * Tech Stack — reference-site pattern: categorized rows of outbound chips.
+ * Uses the shared Section (same heading/padding as every other section)
+ * and the TECH_CHIP token so tags match the experience section by design.
  */
 export function TechStack() {
   const categories = Object.entries(techStack);
   return (
-    <div id="tech-stack" className="relative scroll-mt-16 px-5 md:px-8 py-8 md:py-10">
-      <Reveal>
-        <h2 className="text-base font-medium text-foreground font-heading">Tech Stack</h2>
-      </Reveal>
+    <Section id="tech-stack" title={ui.sections.techStack.title}>
       <div className="mt-4 flex flex-col gap-5">
         {categories.map(([category, items], ci) => (
           <Reveal key={category} delay={ci * 0.04}>
@@ -29,7 +25,7 @@ export function TechStack() {
                       href={item.url} // TODO: official site per tool
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-border bg-card px-2 py-0.5 text-[11.5px] text-muted-foreground hover:text-foreground transition-colors"
+                      className={TECH_CHIP}
                     >
                       <BrandIcon name={item.name} slug={item.slug} className="h-3 w-3" />
                       {item.name}
@@ -42,6 +38,6 @@ export function TechStack() {
           </Reveal>
         ))}
       </div>
-    </div>
+    </Section>
   );
 }
