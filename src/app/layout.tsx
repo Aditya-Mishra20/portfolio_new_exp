@@ -4,7 +4,6 @@ import { Providers } from "@/components/providers";
 import { Footer } from "@/components/footer";
 import { DockPill } from "@/components/dock-pill";
 import { CommandPalette } from "@/components/command-palette";
-import { ChatWidget } from "@/components/chat-widget";
 import { profile, SITE_URL } from "@/content/site";
 import "./globals.css";
 
@@ -35,7 +34,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main>{children}</main>
           <Footer />
           <CommandPalette />
-          <ChatWidget />
           <DockPill />
         </Providers>
       </body>

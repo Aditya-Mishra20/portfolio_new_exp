@@ -16,7 +16,6 @@ import {
   TerminalSquare,
   Wrench,
   Briefcase,
-  MessageCircle,
 } from "lucide-react";
 import { useEffect } from "react";
 import { useCommandPalette, scrollToId } from "@/components/providers";
@@ -136,17 +135,6 @@ export function CommandPalette() {
                   onSelect={() => {
                     toggleTheme();
                     setOpen(false);
-                  }}
-                />
-              </Command.Group>
-
-              <Command.Group heading="AI" className="px-1 py-1 [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground">
-                <Item
-                  label="Ask my AI anything"
-                  icon={<MessageCircle />}
-                  onSelect={() => {
-                    setOpen(false);
-                    window.dispatchEvent(new CustomEvent(ui.event.openChat));
                   }}
                 />
               </Command.Group>

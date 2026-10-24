@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowUp, CircleChevronLeft, FileText, Menu, Moon, Search, Sun, X, Bot,
+  ArrowUp, CircleChevronLeft, FileText, Menu, Moon, Search, Sun, X,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { usePathname, useRouter } from "next/navigation";
@@ -178,14 +178,14 @@ export function DockPill() {
         {/* ask trigger — opens the existing cmdk palette */}
         <button
           type="button"
-          aria-label={ui.chat.askLabel}
+          aria-label={ui.dock.askLabel}
           aria-haspopup="dialog"
           onClick={() => setOpen(true)}
           className="flex h-8 items-center gap-2 rounded-full px-3 bg-foreground/5 hover:bg-foreground/8 dark:bg-foreground/8 dark:hover:bg-foreground/12 text-muted-foreground transition-colors cursor-pointer w-[160px] sm:w-[210px] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
         >
           <Search className="size-[14px] shrink-0 text-muted-foreground" />
           <span aria-hidden="true" className="flex-1 text-left text-[12.5px] truncate">
-            {ui.chat.dockSearch}
+            {ui.dock.dockSearch}
           </span>
           <span aria-hidden="true" className="hidden sm:flex items-center gap-1 shrink-0">
             <kbd className="flex h-[18px] min-w-[18px] items-center justify-center rounded-[6px] bg-foreground/10 px-1 text-[11px] font-medium leading-none text-muted-foreground">
@@ -202,15 +202,6 @@ export function DockPill() {
 
         <BackButton />
         <ThemeButton />
-
-        {/* AI chat bot — opens the chat widget via the shared event it listens for */}
-        <button
-          onClick={() => window.dispatchEvent(new CustomEvent(ui.event.openChat))}
-          aria-label="Chat with my AI"
-          className="relative flex h-8 w-8 items-center justify-center rounded-full text-foreground/80 hover:bg-foreground/5 dark:hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring transition-colors cursor-pointer"
-        >
-          <Bot className="size-4" />
-        </button>
 
         <ScrollRing />
         <MobileMenu />

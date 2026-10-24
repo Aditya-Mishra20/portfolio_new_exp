@@ -1,42 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowUpRight, Calendar, Download, Github, Linkedin, Mail, RefreshCcw } from "lucide-react";
 import { profile, email, calcomUrl, socials, resumeUrl, ui } from "@/content/site";
 import { XBrand } from "@/components/brand-icons";
 import { FlipWords } from "@/components/ui/flip-words";
+import { TimeScenes } from "@/components/time-scenes";
 import { EASE_STANDARD, PANEL_INNER, PANEL_OUTER, SECTION_PAD, SECTION_X, SOCIAL_CHIP } from "@/lib/styles";
 import { Separator } from "@/components/ui/separator";
-
-/** Abstract placeholder hero art — TODO: replace with your own art.
- * The refresh button in the art's corner cycles through these variants;
- * swap them for real art in the same 640×220 box later. */
-const ART_VARIANTS = [
-  { circleX: 120, squareX: 420, tri: "M70 176 L150 108 L230 176 Z", dotX: 560, notchX: 300 },
-  { circleX: 320, squareX: 80, tri: "M470 176 L550 108 L630 176 Z", dotX: 200, notchX: 60 },
-  { circleX: 520, squareX: 260, tri: "M240 176 L320 108 L400 176 Z", dotX: 70, notchX: 460 },
-] as const;
-
-function HeroArt({ dark, variant }: { dark: boolean; variant: number }) {
-  const fg = dark ? "#e4e4e7" : "#18181b";
-  const dim = dark ? "#3f3f46" : "#a1a1aa";
-  const accent = dark ? "#fafafa" : "#18181b";
-  const v = ART_VARIANTS[variant % ART_VARIANTS.length];
-  return (
-    <svg viewBox="0 0 640 220" className="h-auto w-full" role="img" aria-label="Abstract art">
-      <rect x="10" y="10" width="620" height="200" rx="14" fill="none" stroke={dim} strokeDasharray="4 6" />
-      <circle cx={v.circleX} cy="72" r="34" fill="none" stroke={fg} strokeWidth="1.25" />
-      <rect x={v.squareX} y="40" width="110" height="110" rx="10" fill="none" stroke={fg} strokeWidth="1.25" transform={`rotate(6 ${v.squareX + 55} 95)`} />
-      <path d={v.tri} fill="none" stroke={fg} strokeWidth="1.25" />
-      <circle cx={v.dotX} cy="170" r="6" fill={accent} />
-      <path d={`M${v.notchX} 60 L${v.notchX + 40} 60 L${v.notchX + 20} 96 Z`} fill="none" stroke={fg} strokeWidth="1.25" />
-      <text x="26" y="198" fill={dim} fontSize="10" fontFamily="monospace">
-        {"// TODO: replace with your art"}
-      </text>
-    </svg>
-  );
-}
 
 /** Solid quiet CTA (13px, font-light, arrow nudge on hover).
  * `icon` takes an ELEMENT (not a component function) so SolidCta can be
@@ -72,39 +44,61 @@ export function SolidCta({
 }
 
 export function Hero() {
-  const [art, setArt] = useState(0);
+  const [mode, setMode] = useState<"art" | "game">("art");
+  // the iframe mounts on first open and then STAYS mounted (hidden) so the
+  // run survives toggling back to art during the session
+  const [gameOpened, setGameOpened] = useState(false);
+  const toggleMode = () => {
+    setGameOpened(true); // idempotent once true
+    setMode((m) => (m === "art" ? "game" : "art"));
+  };
   return (
     <div>
-      {/* ROW 1 — themed hero art, inset from the frame (the "gap").
-          Refresh button (bottom-left corner, per user drawing) cycles the
-          placeholder variants until real art lands. */}
+      {/* ROW 1 — art box, inset from the frame (the "gap").
+          Corner button swaps between the placeholder art and the Chrome
+          Dino game (chromedino.com embed). */}
       <div className={SECTION_PAD}>
         <div className={`relative w-full aspect-[640/220] ${PANEL_OUTER}`}>
           <div className={`h-full w-full relative bg-muted ${PANEL_INNER}`}>
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={art}
-                initial={{ opacity: 0, filter: "blur(6px)" }}
-                animate={{ opacity: 1, filter: "blur(0px)" }}
-                transition={{ duration: 0.35, ease: EASE_STANDARD }}
-                className="absolute inset-0 flex items-center justify-center p-3"
+            {/* art layer — geometric time-of-day scenes (morning / evening /
+                night), picked by the visitor's local clock. Pure SVG, no
+                asset files (template-safe). Fades out when the game shows. */}
+            <TimeScenes visible={mode === "art"} />
+
+            {/* game layer — mounts lazily on first toggle.
+                SOURCE: https://chromedino.com/batman/embed/ (Batman vs Joker,
+                fan-made; dark Gotham by default so no theme filter needed).
+                Other clean embeds exist: /color/embed/ /black/embed/
+                /joker/embed/ /dina/embed/ (chromedino.com). Attribution kept
+                below. */}
+            {gameOpened && (
+              <div
+                className={`absolute inset-0 transition-opacity duration-300 ${
+                  mode === "game" ? "opacity-100" : "opacity-0 pointer-events-none"
+                }`}
               >
-                <div className="hero-art-light w-full">
-                  <HeroArt dark={false} variant={art} />
-                </div>
-                <div className="hero-art-dark w-full">
-                  <HeroArt dark variant={art} />
-                </div>
-              </motion.div>
-            </AnimatePresence>
+                <iframe
+                  src="https://chromedino.com/batman/embed/"
+                  title="Batman vs Joker Game"
+                  scrolling="no"
+                  className="dino-frame absolute inset-0 size-full border-0"
+                />
+                <p className="absolute bottom-1.5 right-2.5 z-10 m-0 font-mono text-[10px] text-muted-foreground/80">
+                  Batman vs Joker — game by{" "}
+                  <a href="https://chromedino.com" target="_blank" rel="noreferrer" className="underline transition-colors hover:text-foreground">
+                    chromedino.com
+                  </a>
+                </p>
+              </div>
+            )}
           </div>
 
-          {/* art refresh — small square tucked INSIDE the panel's bottom-left
-              corner with a small gap from the border (user update) */}
+          {/* art/game toggle — small square tucked INSIDE the panel's
+              bottom-left corner with a small gap from the border */}
           <button
-            onClick={() => setArt((a) => a + 1)}
-            aria-label="Refresh hero art"
-            title="Shuffle art"
+            onClick={toggleMode}
+            aria-label={mode === "art" ? "Show the Batman game" : "Back to art"}
+            title={mode === "art" ? "Show the Batman game" : "Back to art"}
             className="group/artbtn absolute bottom-2.5 left-2.5 z-10 flex size-7 items-center justify-center rounded-md border border-border bg-background shadow-sm text-foreground/70 hover:text-foreground hover:bg-foreground/5 dark:hover:bg-foreground/10 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           >
             <RefreshCcw className="size-3.5 transition-transform duration-300 group-hover/artbtn:-rotate-45" />

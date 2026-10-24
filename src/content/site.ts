@@ -265,7 +265,7 @@ export const education: EducationItem[] = [
 
 /**
  * UI copy — every interface string in one place: section headers/intros,
- * button labels, chat strings, footer strips, and shared event names.
+ * button labels, footer strips, and shared event names.
  * Data lives above this block; this is what the site *says*.
  */
 export const ui = {
@@ -307,18 +307,13 @@ export const ui = {
     liveLabel: "Live", // TODO
     sourceLabel: "Source", // TODO
   },
-  chat: {
-    greeting: `Hi! I'm ${profile.name}'s README bot. Ask me anything about this portfolio — projects, stack, experience, contact.`,
+  /** Dock pill labels (the search trigger opens the Ctrl K command palette). */
+  dock: {
     askLabel: "Ask me anything",
     /** Visible label on the dock's search trigger (aria-label stays `askLabel`
      * so screen readers announce intent; the kbd chips already show "Ctrl K"). */
     dockSearch: "Search",
-    /** /md routes the chat widget fetches to build its retrieval index — keep in sync
-     * with content/markdown.ts, which owns the actual doc contents (server-only). */
-    docRoutes: ["/md/profile.md", "/md/projects.md", "/md/experience.md", "/md/contact.md"],
   },
-  /** Custom DOM events shared between dock pill, palette, and chat widget. */
-  event: { openChat: "open-chat" },
   footer: {
     copyrightNote: "The source · All rights reserved", // TODO
     agentLinks: [

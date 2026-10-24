@@ -152,19 +152,6 @@ main > * {
   scrollbar-color: var(--border) transparent;
 }
 
-/* themed hero art swap: exactly one variant renders at a time */
-.hero-art-light,
-.hero-art-dark {
-  display: none;
-}
-[data-theme="dark"] .hero-art-dark {
-  display: block;
-}
-:where(html:not([data-theme="dark"])) .hero-art-light,
-html:not([data-theme]) .hero-art-light {
-  display: block;
-}
-
 /* ghost dot-grid backdrop for hero sections (inline, no asset) */
 .dot-grid {
   background-image: radial-gradient(color-mix(in oklab, var(--foreground) 14%, transparent) 1px, transparent 1px);
