@@ -21,7 +21,7 @@ export function ProjectList() {
           href="/projects"
           className="text-xs font-light text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
         >
-          more <ArrowUpRight className="size-3" />
+          all projects <ArrowUpRight className="size-3" />
         </Link>
       }
     >

@@ -35,10 +35,13 @@ function useClock(): string | null {
   return now;
 }
 
+/** Footer art band: abstract landscape placeholder drawn in SVG (rocks +
+ * river + treeline + moon). Template-safe — pure code, no asset files. */
+
 function FooterArt() {
   // abstract landscape placeholder (rocks + river + trees silhouette)
   return (
-    <svg viewBox="0 0 880 300" className="h-auto w-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <svg viewBox="0 0 880 300" className="block w-full h-auto" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <rect width="880" height="300" fill="#5f4631" />
       <circle cx="620" cy="70" r="46" fill="#f59e0b" opacity="0.85" />
       <path d="M0 0 L880 0 L880 90 Q560 40 0 96 Z" fill="#7c3d17" opacity="0.8" />
@@ -58,9 +61,9 @@ function FooterArt() {
         <ellipse key={i} cx={cx} cy={cy} rx={rx} ry={rx * 0.55} fill="#44403c" />
       ))}
       {/* scrim for legibility */}
-      <rect width="880" height="300" fill="url(#scrim)" />
+      <rect width="880" height="300" fill="url(#footerScrim)" />
       <defs>
-        <linearGradient id="scrim" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="footerScrim" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#09090b" stopOpacity="0.25" />
           <stop offset="1" stopColor="#09090b" stopOpacity="0.65" />
         </linearGradient>
@@ -91,7 +94,7 @@ export function Footer() {
             <div className={`${SECTION_X} py-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-0.5 text-[11px] text-muted-foreground`}>
               <span>
                 © {new Date().getFullYear()}{" "}
-                <a href="#" className="underline underline-offset-2 decoration-border hover:text-foreground transition-colors">{profile.name}</a>
+                <a href="#top" className="underline underline-offset-2 decoration-border hover:text-foreground transition-colors">{profile.name}</a>
                 . {ui.footer.copyrightNote}
               </span>
               {agentLinks.map((l) => (
@@ -121,7 +124,7 @@ export function Footer() {
                 <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-center justify-center gap-x-3 gap-y-0.5 px-3 py-2 text-[11px] text-white/85">
                   <span>
                     © {new Date().getFullYear()}{" "}
-                    <a href="#" className="underline underline-offset-2 decoration-white/40">{profile.name}</a>
+                    <a href="#top" className="underline underline-offset-2 decoration-white/40">{profile.name}</a>
                     . {ui.footer.copyrightNote}
                   </span>
                   {agentLinks.map((l) => (

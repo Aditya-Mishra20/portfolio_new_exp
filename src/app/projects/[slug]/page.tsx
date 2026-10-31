@@ -10,6 +10,7 @@ import {
 } from "@/content/site";
 import { BrandIcon } from "@/components/brand-icons";
 import { Reveal } from "@/components/reveal";
+import { ProjectArt } from "@/components/project-art";
 import { SOCIAL_CHIP, TECH_CHIP, PAGE_WRAPPER, SECTION_PAD, PANEL_OUTER, PANEL_INNER } from "@/lib/styles";
 
 /* /projects/[slug] — one project's full breakdown:
@@ -51,11 +52,21 @@ export default async function ProjectDetailPage({
     <div className={PAGE_WRAPPER}>
       <div id="top" className={SECTION_PAD}>
         {/* FEATURE IMAGE/VIDEO — same inset-box language as the hero art.
-            TODO: drop real cover art or a video into public/projects/ and
-            render it here (img under PANEL_INNER); left empty for now. */}
+            Projects can set imageSrc (site.ts) to drop in a real cover;
+            otherwise a geometric placeholder (project-art.tsx, picked per
+            project) fills the box. */}
         <div className={`relative w-full aspect-video ${PANEL_OUTER}`}>
           <div className={`h-full w-full relative bg-muted ${PANEL_INNER}`}>
-            {/* TODO: feature image / video */}
+            {p.imageSrc ? (
+              <img
+                src={p.imageSrc}
+                alt={`${p.title} cover art`}
+                className="size-full object-cover"
+              />
+            ) : (
+              <ProjectArt project={p} />
+            )}
+            {/* TODO: swap the placeholder for a real cover video here if wanted */}
           </div>
         </div>
 
